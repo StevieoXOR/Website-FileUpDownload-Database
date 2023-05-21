@@ -1,0 +1,138 @@
+<style>
+table {
+        border-collapse: collapse;
+        border: 2px solid black;
+        width: 80%;
+        margin: 0 auto; /* center the table horizontally */
+      }
+      
+th, td {
+    border: 1px solid black; /* add border to each piece of data */
+    padding: 5px;
+    text-align: center;
+  }
+ th {background-color: #11DCFF;}
+      
+  .btn {
+    display: block;
+    padding: 10px 100px !important;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 0 auto;
+  }
+
+  .btn:hover {
+    background-color: #8899ff;
+  }
+
+  .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  
+  footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #f2f2f2;
+  padding: 10px;
+  text-align: center;
+}
+
+footer button {
+  margin-top: 10px;
+  padding: 10px 200px !important;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+footer button:hover {
+  background-color: #3e8e41;
+}
+
+</style>
+<!--This code will center the buttons on the page using the center class, which uses flexbox to align items horizontally and vertically. It also styles the buttons using the btn class, which sets the padding, background color, font color, and border radius. -->
+
+<div style="text-align: center">
+<br><br>
+<h1>Results for Job</h1>
+<br><br>
+
+<h3>Output Waveform</h3>
+<!-- img is in same folder as this file-->
+<img src="13.png" style="width:600px;height:225px;">
+<br><br>
+
+<table>
+          <tr>
+            <!-- <th>Serial No</th> -->
+            <th>File Name</th>
+            <th>Platform</th>
+            <!-- <th>No of Tests</th>
+            <th>Time</th>
+            <th>Completed</th> -->
+            <th>Link</th>
+          </tr>
+          <!-- {-% for row in rows %} -->
+          <tr>
+            <!-- <td>{-{ loop.index }}</td>
+            <td>{-{ row['filename'] | split('-') | last }}</td>
+            <td>{-{ row[3] }}</td>
+            <td>{-{ row[4] }}</td>
+            <td>{-{ row[5] }}</td>
+            <td>{-{ 'Yes' if row[6] else 'No' }}</td>
+          <td>{-% if row[6] %}
+              <a href="{-{ url_for('view_results', job_id=row[0]) }}">View Results</a>
+              {-% elif row[6] == 0 %}
+              In Progress
+              {-% else %}
+            {-% endif %} -->
+          </td>
+          <td>testfile.c</td>
+          <td>FPGA</td>
+          <td><a href="{{ url_for('download_results', job_id=job.id) }}" class="btn btn-primary mr-2" >Download Result CSV File</a><br></td>
+          </tr>
+          <!-- Each tr creates a new table row -->
+          <tr>
+          <td>testfile.c</td>
+          <td>FPGA</td>
+          <td><a href="{{ url_for('download_image', job_id=job.id) }}" class="btn btn-primary">Download Image</a><br></td>
+        </tr>
+        <!-- {-% endfor %} -->
+      </table>
+
+</div>
+<!-- <div class="d-flex justify-content-center mb-3">
+  <a href="{-{ url_for('download_results', job_id=job.id) }}" class="btn btn-primary mr-2" >Download Result CSV File</a><br>
+  <a href="{-{ url_for('download_image', job_id=job.id) }}" class="btn btn-primary">Download Image</a><br>
+</div> -->
+<footer>
+      <form action="{{ url_for('upload') }}">
+          <button type="submit" class="btn">Go back to uploads</button>
+      </form>
+      <form action="{{ url_for('show_jobs') }}">
+          <button type="submit" class="btn">Show Job List</button>
+      </form>
+      <form action="/logout" method="POST">
+          <button type="submit" class="btn">Logout</button>
+      </form>
+</footer>
+<!-- <script>
+    function preventBack(){window.history.forward();}
+    setTimeout("preventBack()", 0);
+    window.onunload=function(){null};
+ISSUE IS THAT THE CONFIRMATION PAGE CAN'T GO BACK TO ENTER ANOTHER SUBMISSION, MEANING NOWHERE ELSE CAN BE ACCESSED
+WITHOUT URL HACKING
+</script> -->

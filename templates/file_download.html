@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %} 
+    <p>Logged in as {{ session['user_email'] }}</p>
+    
+<!--    <ul>			REMOVE THE '-' WHEREVER IT SEEMS OUT OF PLACE TO LET THE EMBEDDED CODE RUN
+     Add a link to download each file. Display the list of files using a loop.
+    {-% for file in files %}
+        <li>
+            {-{ file[0] }}
+            <a href="{-{ url_for('download', filename=file[0]) }}">Download</a>
+        </li>
+    {-% endfor %}
+    </ul>  -->
+
+<h2>My Uploaded Files</h2>
+  <ul>
+    <!--file==['filename','bool_completed']    uploadedFiles=[[username,username,username],[completed,completed,completed]]-->
+    {% for file in uploadedFiles %}
+    <!-- fileName = file[0]	    completed = file[1] -->
+    <li><a href="{{ url_for('file_download', filename=file[0]) }}">{{ file[0] }}</a> completed={{ file[1] }}</li>
+    {% endfor %}
+  </ul><br>
+
+<h2>My Results Files</h2>
+  <ul>
+    {% for fileName in resultsFiles %}
+      <li><a href="{{ url_for('file_download', filename=fileName) }}">{{ fileName }}</a></li>
+    {% endfor %}
+  </ul><br>
+{% endblock %}

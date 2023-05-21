@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Login</h2>
+    <form method="POST">
+        <label for="user_email">User Email:</label>
+        <input type="text" id="userID" name="user_email" required><br>
+
+	<label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <input type="submit" value="Login">
+    </form>
+    <p>{{ message }}</p>
+    <p>Don't have an account? <a href="{{ url_for('signup') }}">Sign up</a></p>
+    <p><a href="{{ url_for('forgot_password') }}">Forgot password?</a></p>
+{% endblock %}
+
+{%block logout%}{%endblock%}
+<!-- Overwrites the block (provided in "base.html") to be empty-->

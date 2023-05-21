@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+<!--    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='script.js') }}"></script>
+    -->
+  </head>
+  <body>
+    <nav>
+      <ul>
+	<li><a href="{{ url_for('home') }}">Home (must be signed in to access)</a></li>
+        <li><a href="{{ url_for('upload') }}">File Upload (must be signed in to access)</a></li>
+        <li><a href="{{ url_for('signup') }}">Signup</a></li>
+        <li><a href="{{ url_for('login') }}">Login</a></li>
+        <br><br><br>
+      </ul>
+    </nav>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class="flashes">
+      {% for msg in messages %}
+      <h4>{{ msg }}</h4>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock content %}
+    {%block logout%}
+	<form method="POST" action="{{ url_for('logout') }}">
+        <input type="submit" value="Logout">
+    	</form>
+    {%endblock logout%}
+
+    {% block footer %}
+    <p>&copy; MySite 2023</p>
+    {% endblock %}
+
+  </body>
+</html>
+

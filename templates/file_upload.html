@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+  <p>Logged in as {{ session['user_email'] }}</p>
+
+  <head>
+    <title>Experiment and File Upload Form</title>
+  </head>
+
+  <body>
+    <h1>Submit Job Form</h1>
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+      <label for="file">Select a file to upload:</label><br>
+      <input type="file" id="file" name="file">
+      <br>
+      <label for="platform">Select a platform:</label>
+        <select name="mydropdown" id="mydropdown">
+          {% for option in options %}
+          <option value="{{ option[0] }}">{{ option[0] }}</option>
+          {% endfor %}
+        </select>
+      <br>
+      <label for="numTests">Number of Tests:</label>
+        <input type="number" name="numTests" required min="1" max="10000">
+      <br>
+      <input type="submit" value="Upload">
+    </form>
+
+  </body>
+</html>
+
+{% endblock content %}
