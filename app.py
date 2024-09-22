@@ -66,6 +66,8 @@ def signup():
         db = get_db()
         cur = db.cursor()
         cur.execute('SELECT * FROM users WHERE email=?', (email,))
+        # If a user whose email matches is found (fetchone() == first match in DB), don't sign them up, then return to signup page.
+        #   TODO: Add "user already exists" flash.
         if cur.fetchone():
             db.close()
             return redirect(url_for('signup'))
@@ -93,7 +95,7 @@ def login():
         user_tuple = cur.fetchone() #Gets one row from the database table, where each row is a user
 
         if user_tuple is not None:
-            # Convert the tuple to a dictionary
+            # Convert the tuple to a python dictionary
             user = {
                 'user_id': user_tuple[0],
                 'email': user_tuple[1],
@@ -135,9 +137,8 @@ def upload():
         db.close()
         # Pass the platform data to the upload.html template
         return render_template('upload.html', options=data)
-    
-    elif request.method == 'POST':
 
+    elif request.method == 'POST':
         file = request.files['file']
         if file:
             userid = session['user_id']
@@ -162,14 +163,14 @@ def upload():
                 db.commit()
                 db.close()
 
-                # Process the file using a subprocess
+                # Process the file using a subprocess (to avoid stalling the main process)
                 subprocess.Popen(["python", "process_file.py", str(file_id), str(userid)])
 
-            flash(f"File '{file.filename}' uploaded successfully'") #Added by S on May1,2023
+            flash(f"File '{file.filename}' uploaded successfully'")
             return redirect(url_for('show_jobs'))
             #return f"File '{file.filename}' uploaded successfully'"
-        else:
-            with app.app_context():  # Added code
+        else:    # If method isn't POST nor GET:  show the options that you can specify
+            with app.app_context():
                 db = get_db()
                 cur = db.cursor()
                 cur.execute("SELECT DISTINCT platform FROM jobs")
