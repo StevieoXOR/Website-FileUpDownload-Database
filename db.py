@@ -6,7 +6,11 @@ import os
 data_folder = 'data'
 if not os.path.exists(data_folder):
     os.makedirs(data_folder)
-DATABASE = 'data/example.db'
+
+# (Linux style) File location of database.
+# It's important that the address doesn't start with a slash; a starting slash
+#    indicates "Full directory path" instead of "Relative directory path"
+DATABASE = 'data/example.db'    # == './data/example.db' == currFolderWhereThisFile_db.py_IsStored/data/example.db
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -15,8 +19,10 @@ def get_db():
         create_db()
     return db
 
+"""Create the database tables that do not exist yet, filling any hardcoded tables with info."""
 def create_db():
-    """Create the database tables."""
+    # Capitalization doesn't matter to the SQL interpreter, but it helps humans
+    #    disambiguate between commands/qualifiers and human-specified names
     with get_db() as conn:
         cur = conn.cursor()
         cur.execute("""
@@ -45,17 +51,18 @@ def create_db():
             )
         """)
         cur.execute("""
-            CREATE TABLE IF NOT EXISTS Options (name TEXT UNIQUE NOT NULL)
+            CREATE TABLE IF NOT EXISTS options (name TEXT UNIQUE NOT NULL)
         """)
-        #Get an entry from the 'options' table in the database where the entry has name 'FPGA'
+        # Get an entry from the 'options' table in the database where the entry has name 'FPGA'
         someName = 'FPGA'
         cur.execute('SELECT name FROM options WHERE name=?', (someName,))
         result = cur.fetchone()
         
-        #If no entry in 'options' table that has name 'FPGA', then insert the option names
+        # If no entry in 'options' table that has name 'FPGA', then insert the option names
         if result is None:
-            #Note the comma after 'FPGA'. This creates a tuple with a single element. If you omit the comma, Python
-            #  will interpret the parentheses as a grouping operator, and the result will not be a tuple.
+            # Note the comma after 'FPGA'. This creates a Python tuple with a single element.
+            # If you omit the comma, Python will interpret the parentheses as a grouping operator,
+            #    and the result will not be a tuple (tuple type is required).
             cur.execute("INSERT INTO options (name) VALUES (?)", ('FPGA',))
             cur.execute("INSERT INTO options (name) VALUES (?)", ('Chip Whisperer',))
 
